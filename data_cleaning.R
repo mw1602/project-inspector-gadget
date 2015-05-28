@@ -9,7 +9,9 @@ con <- dbConnect(drv,
                  user = "westerlund",
                  password = pword)
 
-data <- dbGetQuery(con, 'SELECT * FROM masha.building_violations')
+full_data <- dbGetQuery(con, 'SELECT * FROM masha.building_violations')
+
+data <- dbGetQuery(con, 'SELECT * FROM masha."Building_Violations_sample_50000"')
 
 dbDisconnect(con)
 
@@ -22,10 +24,8 @@ sapply(data,class)
 
 data <- data[,!names(data) %in% 'SSA']
 
-df$ID
+names(data) <- gsub(" ", "_", names(data))
 
-data$VIOLATION.DATE <- as.character(data$VIOLATION.DATE)
+summary(data)
+sapply(data, is.na)
 
-data$VIOLATION.DATE <- as.Date(data$VIOLATION.DATE, format = '%m/%d/%Y')
-
-head(data$VIOLATION.DATE)
